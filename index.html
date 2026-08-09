@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Anchor Meals — practical nutrition, meal planning, recipes, and food support built for the Anchor community.">
+  <title>Anchor Meals — Eat Well. Stay Anchored.</title>
+  <style>
+    :root {
+      --bg: #f4f8fa;
+      --surface: #ffffff;
+      --navy: #12355b;
+      --blue: #2f80ed;
+      --meals: #5cb85c;
+      --meals-dark: #3f9142;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #dbe5ea;
+      --soft: #eaf6ec;
+      --shadow: 0 18px 50px rgba(18, 53, 91, .10);
+      --radius: 22px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(219,229,234,.9);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--navy);
+      font-size: 1.15rem;
+    }
+
+    .anchor-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--navy);
+      color: white;
+      font-size: 1.15rem;
+    }
+
+    .brand span:last-child { color: var(--meals-dark); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: .92rem;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover { color: var(--navy); }
+
+    .nav-cta {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: var(--meals);
+      color: white !important;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 92px 0 78px;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(92,184,92,.18), transparent 28%),
+        radial-gradient(circle at 10% 80%, rgba(47,128,237,.10), transparent 30%),
+        linear-gradient(135deg, #ffffff 0%, #edf7f1 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: var(--meals-dark);
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .78rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--meals);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 700px;
+      color: var(--navy);
+      font-size: clamp(3rem, 7vw, 5.6rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .hero h1 span { color: var(--meals-dark); }
+
+    .hero-copy {
+      max-width: 610px;
+      margin: 24px 0 30px;
+      color: var(--muted);
+      font-size: 1.15rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 12px;
+      font-weight: 750;
+      border: 1px solid transparent;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(18,53,91,.12);
+    }
+
+    .button.primary {
+      background: var(--meals);
+      color: white;
+    }
+
+    .button.secondary {
+      background: white;
+      color: var(--navy);
+      border-color: var(--line);
+    }
+
+    .meal-card {
+      position: relative;
+      min-height: 470px;
+      padding: 28px;
+      border-radius: 30px;
+      background: var(--navy);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .meal-card::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(92,184,92,.18);
+      right: -90px;
+      top: -90px;
+    }
+
+    .meal-card::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: rgba(47,128,237,.14);
+      left: -90px;
+      bottom: -90px;
+    }
+
+    .meal-window {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      min-height: 414px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 22px;
+      background: rgba(255,255,255,.07);
+    }
+
+    .meal-window-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      color: white;
+    }
+
+    .meal-window-title { font-weight: 800; }
+    .meal-window-date { color: #b9c9d7; font-size: .82rem; }
+
+    .meal {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.95);
+    }
+
+    .meal-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--soft);
+      font-size: 1.35rem;
+    }
+
+    .meal strong { display: block; color: var(--navy); }
+    .meal small { color: var(--muted); }
+
+    section { padding: 90px 0; }
+
+    .section-head {
+      max-width: 720px;
+      margin-bottom: 42px;
+    }
+
+    .section-kicker {
+      color: var(--meals-dark);
+      font-size: .78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    h2 {
+      margin: 8px 0 12px;
+      color: var(--navy);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--meals);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 8px 28px rgba(18,53,91,.05);
+    }
+
+    .feature-number {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 22px;
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--meals-dark);
+      font-weight: 850;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 1.2rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .panel {
+      padding: 36px;
+      border-radius: 28px;
+      background: var(--navy);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 { color: white; }
+    .panel p { color: #c8d5df; }
+
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 26px 0 0;
+    }
+
+    .check-list li {
+      display: flex;
+      gap: 12px;
+      margin: 15px 0;
+      color: #e5edf3;
+    }
+
+    .check-list li::before {
+      content: "✓";
+      display: inline-grid;
+      place-items: center;
+      width: 23px;
+      height: 23px;
+      flex: 0 0 23px;
+      border-radius: 50%;
+      background: var(--meals);
+      color: white;
+      font-weight: 800;
+      font-size: .75rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 22px;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .step-number {
+      display: grid;
+      place-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      background: var(--soft);
+      color: var(--meals-dark);
+      font-weight: 850;
+    }
+
+    .step h3 {
+      margin: 2px 0 4px;
+      color: var(--navy);
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .cta {
+      padding: 90px 0;
+      background: var(--navy);
+      color: white;
+    }
+
+    .cta-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .cta h2 { color: white; margin-bottom: 10px; }
+    .cta p { margin: 0; max-width: 650px; color: #c8d5df; }
+
+    footer {
+      padding: 34px 0;
+      background: #0d2945;
+      color: #9fb2c1;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      font-size: .85rem;
+    }
+
+    .footer-brand {
+      color: white;
+      font-weight: 800;
+    }
+
+    @media (max-width: 850px) {
+      .nav-links { display: none; }
+      .hero { padding-top: 62px; }
+      .hero-grid,
+      .split,
+      .cta-inner {
+        grid-template-columns: 1fr;
+      }
+      .feature-grid { grid-template-columns: 1fr; }
+      .meal-card { min-height: auto; }
+      .cta-inner { gap: 24px; }
+    }
+
+    @media (max-width: 520px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      section { padding: 65px 0; }
+      h1 { font-size: 3.15rem; }
+      .meal-card { padding: 16px; }
+      .meal-window { padding: 16px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <span class="anchor-mark">⚓</span>
+        <span>Anchor <span>Meals</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#why">Why Meals</a>
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a class="nav-cta" href="#download">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Anchor Meals</div>
+          <h1>Eat well.<br><span>Stay anchored.</span></h1>
+          <p class="hero-copy">
+            Practical food support for real life. Plan meals, discover recipes,
+            organize your shopping, and build healthier routines without making
+            food feel complicated.
+          </p>
+
+          <div class="actions">
+            <a class="button primary" href="#features">Explore Anchor Meals</a>
+            <a class="button secondary" href="#how">See How It Works</a>
+          </div>
+        </div>
+
+        <div class="meal-card" aria-label="Anchor Meals app preview">
+          <div class="meal-window">
+            <div class="meal-window-top">
+              <div class="meal-window-title">Today's Meals</div>
+              <div class="meal-window-date">Monday</div>
+            </div>
+
+            <div class="meal">
+              <div class="meal-icon">🥣</div>
+              <div>
+                <strong>Breakfast</strong>
+                <small>Oatmeal • Banana • Eggs</small>
+              </div>
+            </div>
+
+            <div class="meal">
+              <div class="meal-icon">🥗</div>
+              <div>
+                <strong>Lunch</strong>
+                <small>Chicken bowl • Greens • Rice</small>
+              </div>
+            </div>
+
+            <div class="meal">
+              <div class="meal-icon">🍽️</div>
+              <div>
+                <strong>Dinner</strong>
+                <small>Salmon • Vegetables • Potatoes</small>
+              </div>
+            </div>
+
+            <div class="meal">
+              <div class="meal-icon">🍎</div>
+              <div>
+                <strong>Snack</strong>
+                <small>Fruit • Yogurt</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Why Anchor Meals</div>
+          <h2>Nutrition should support your life, not complicate it.</h2>
+          <p>
+            Anchor Meals brings food, planning, and practical support into one
+            place so healthy eating can become something you can actually keep doing.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-number">01</div>
+            <h3>Plan with purpose</h3>
+            <p>
+              Organize meals around your day, your goals, and the food you
+              actually want to eat.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">02</div>
+            <h3>Make shopping easier</h3>
+            <p>
+              Turn meal ideas into practical shopping lists that help you know
+              what you need before you head to the store.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">03</div>
+            <h3>Build better routines</h3>
+            <p>
+              Use recipes, meal planning, and nutrition information to make
+              consistent choices easier over time.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container split">
+        <div class="panel">
+          <div class="section-kicker">Built for real life</div>
+          <h2>A food companion that meets you where you are.</h2>
+          <p>
+            Anchor Meals is part of the Anchor network — designed to connect
+            everyday wellness with practical support.
+          </p>
+
+          <ul class="check-list">
+            <li>Meal planning and daily meal organization</li>
+            <li>Recipe discovery and saved meals</li>
+            <li>Nutrition information and food search</li>
+            <li>Shopping list organization</li>
+            <li>Support for healthier everyday routines</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="section-head">
+            <div class="section-kicker">What you can do</div>
+            <h2>From idea to plate.</h2>
+            <p>
+              Keep the process simple: decide what you want to eat, plan it,
+              shop for it, and make it happen.
+            </p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">01</div>
+              <div>
+                <h3>Discover</h3>
+                <p>Find foods and recipes that fit the way you want to eat.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">02</div>
+              <div>
+                <h3>Plan</h3>
+                <p>Build meals into your plan so you know what is coming next.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">03</div>
+              <div>
+                <h3>Shop</h3>
+                <p>Organize the ingredients you need into a practical shopping list.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">04</div>
+              <div>
+                <h3>Eat & keep going</h3>
+                <p>Use your plan as a guide and build consistency one meal at a time.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">The Anchor approach</div>
+          <h2>Better food habits are built one step at a time.</h2>
+          <p>
+            Anchor Meals is not about perfection. It is about giving you the
+            tools and structure to make the next meal a little easier.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-number">A</div>
+            <h3>Know what you have</h3>
+            <p>Start with practical food choices and information you can use.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">B</div>
+            <h3>Know what comes next</h3>
+            <p>Plan ahead so meals do not become another daily decision to manage.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">C</div>
+            <h3>Keep showing up</h3>
+            <p>Small, repeatable choices create routines that can last.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="download">
+      <div class="container cta-inner">
+        <div>
+          <div class="section-kicker">Anchor Meals</div>
+          <h2>Your next meal can be a better step.</h2>
+          <p>
+            Anchor Meals is being built as part of the Anchor network to make
+            nutrition, meal planning, recipes, and food support more accessible.
+          </p>
+        </div>
+
+        <a class="button primary" href="#top">Back to top ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-brand">⚓ Anchor Meals</div>
+      <div>Part of the Anchor Network · Brotherhood. Honesty. Support.</div>
+    </div>
+  </footer>
+</body>
+</html>
